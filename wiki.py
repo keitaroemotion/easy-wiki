@@ -11,17 +11,29 @@ wiki_dir = "/usr/local/etc/wiki"
 if(not os.path.isdir(wiki_dir)):
     os.mkdir(wiki_dir)
 
+def get_matching_files():
+    regex = "*".join(sys.argv[2:])
+    return [f for f in glob.glob("{}**/*{}*".format(wiki_dir, regex))]
+ 
 if(len(sys.argv) < 2):
     title = raw_input("wiki title: ")
 else:
     if  (sys.argv[1].startswith("-")):
         option = sys.argv[1]
         if  (option == "-h"):
+            print
+            print("wiki -h              ... show help menu")
+            print("wiki -ls [kw1] [kw2] ... enlist pages with key words")
+            print
             sys.exit()
+
+        elif(option == "-rm"):
+            for file in get_matching_files():
+                os.remove(file)
+                print "\ndeleted: {}\n".format(ntpath.basename(file))
+
         elif(option == "-ls"):
-            regex = "*".join(sys.argv[2:])
-            files = [f for f in glob.glob("{}**/*{}*".format(wiki_dir, regex))]
-            for file in files:
+            for file in get_matching_files():
                 print ntpath.basename(file)
 
         sys.exit()
