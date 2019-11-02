@@ -14,10 +14,15 @@ if(not os.path.isdir(wiki_dir)):
 if(len(sys.argv) < 2):
     title = raw_input("wiki title: ")
 else:
-    if(sys.argv[1] == "-ls"):
-        files = [f for f in glob.glob(wiki_dir + "**/*")]
-        for file in files:
-            print ntpath.basename(file)
+    if  (sys.argv[1].startswith("-")):
+        option = sys.argv[1]
+        if  (option == "-h"):
+            sys.exit()
+        elif(option == "-ls"):
+            regex = "*".join(sys.argv[2:])
+            files = [f for f in glob.glob("{}**/*{}*".format(wiki_dir, regex))]
+            for file in files:
+                print ntpath.basename(file)
 
         sys.exit()
 
