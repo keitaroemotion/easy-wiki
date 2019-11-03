@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from numpy.random import randint 
+
 import glob
 import os
 import ntpath
@@ -14,6 +16,9 @@ if(not os.path.isdir(wiki_dir)):
 def get_matching_files():
     regex = "*".join(sys.argv[2:])
     return [f for f in glob.glob("{}**/*{}*".format(wiki_dir, regex))]
+
+def get_files():
+    return [f for f in glob.glob("{}**/*".format(wiki_dir))]
  
 if(len(sys.argv) < 2):
     title = raw_input("wiki title: ")
@@ -24,8 +29,12 @@ else:
             print
             print("wiki -h              ... show help menu")
             print("wiki -ls [kw1] [kw2] ... enlist pages with key words")
+            print("wiki -ra             ... randomly show articles")
             print
-            sys.exit()
+
+        elif(option == "-ra"):
+            files = get_files()            
+            os.system("vim {}".format(files[randint(len(files))]))
 
         elif(option == "-rm"):
             for file in get_matching_files():
