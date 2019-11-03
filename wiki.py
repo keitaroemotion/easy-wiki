@@ -38,13 +38,12 @@ else:
             show_help()
 
         elif(option == "-e"):
-            title = '_'.join(sys.argv[2:])
-
             if(len(sys.argv) < 3):
                 title = raw_input("wiki title: ")
             else:
                 title = title.replace(" ", "_")
 
+            title = '_'.join(sys.argv[2:])
             os.system("vim {}/{}".format(wiki_dir, title))
             print(title)
 
@@ -54,10 +53,10 @@ else:
 
         elif(option == "-rm"):
             for file in get_matching_files():
-                os.remove(file)
                 title = ntpath.basename(file)
                 ans   = raw_input("delete {} [Y/n]?: ".format(title))
-                if ans == "y":
+                if ans.lower() == "y":
+                    os.remove(file)
                     print "\ndeleted: {}\n".format(title)
 
         elif(option == "-ls"):
