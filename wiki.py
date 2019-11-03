@@ -4,6 +4,7 @@ from numpy.random import randint
 
 import glob
 import os
+import re
 import ntpath
 import sys
 
@@ -43,9 +44,18 @@ else:
             else:
                 title = title.replace(" ", "_")
 
-            title = '_'.join(sys.argv[2:])
-            os.system("vim {}/{}".format(wiki_dir, title))
-            print(title)
+            title          = '_'.join(sys.argv[2:])
+            matching_files = [x for x in get_files() if re.search(title, "*{}*".format(x))]
+            target_files   = []
+            for matching_file in matching_files:
+                ans = raw_input("edit {} [Y/n]?: ".format(title))
+                if ans.lower() == "y":
+                    target_files.append(matching_file) 
+
+            if len(target_files) > 0:
+                os.system("vim {}/{}".format(wiki_dir, " ".join(target_files)))
+            else:
+                os.system("vim {}/{}".format(wiki_dir, title))
 
         elif(option == "-ra"):
             files = get_files()            
