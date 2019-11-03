@@ -15,7 +15,7 @@ if(not os.path.isdir(wiki_dir)):
 
 def get_matching_files():
     regex = "*".join(sys.argv[2:])
-    return [f for f in glob.glob("{}**/*{}*".format(wiki_dir, regex))]
+    return [f for f in glob.glob("{}**/{}*".format(wiki_dir, regex))]
 
 def get_files():
     return [f for f in glob.glob("{}**/*".format(wiki_dir))]
@@ -25,6 +25,7 @@ def show_help():
     print("wiki -h              ... show help menu")
     print("wiki -ls [kw1] [kw2] ... enlist pages with key words")
     print("wiki -ra             ... randomly show articles")
+    print("wiki -rm [kw]        ... remove article")
     print("wiki -e              ... add/edit wiki article")
     print
 
@@ -54,11 +55,16 @@ else:
         elif(option == "-rm"):
             for file in get_matching_files():
                 os.remove(file)
-                print "\ndeleted: {}\n".format(ntpath.basename(file))
+                title = ntpath.basename(file)
+                ans   = raw_input("delete {} [Y/n]?: ".format(title))
+                if ans == "y":
+                    print "\ndeleted: {}\n".format(title)
 
         elif(option == "-ls"):
+            print
             for file in get_matching_files():
                 print ntpath.basename(file)
+            print
 
         sys.exit()
 
