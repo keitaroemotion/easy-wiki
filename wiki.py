@@ -8,6 +8,11 @@ import re
 import ntpath
 import sys
 
+#
+#
+# Wiki article management script 
+#
+#
 title    = ""
 wiki_dir = "/usr/local/etc/wiki"
 
@@ -53,13 +58,15 @@ else:
                     target_files.append(matching_file) 
 
             if len(target_files) > 0:
-                os.system("vim {}/{}".format(wiki_dir, " ".join(target_files)))
+                os.system("vim {}".format(" ".join(target_files)))
             else:
                 os.system("vim {}/{}".format(wiki_dir, title))
 
         elif(option == "-ra"):
             files = get_files()            
-            os.system("vim {}".format(files[randint(len(files))]))
+            file  = files[randint(len(files))]
+            print("opening: {}".format(file))
+            os.system("cat {}".format(file))
 
         elif(option == "-rm"):
             for file in get_matching_files():
