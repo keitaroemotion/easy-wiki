@@ -48,14 +48,25 @@ else:
                 title = raw_input("wiki title: ")
             else:
                 title = title.replace(" ", "_")
+                title = '_'.join(sys.argv[2:])
 
-            title          = '_'.join(sys.argv[2:])
+            if(title == ''):
+                print("title is blank...")
+                sys.exit()
+
             matching_files = [x for x in get_files() if re.search(title, "*{}*".format(x))]
             target_files   = []
             for matching_file in matching_files:
-                ans = raw_input("edit {} [Y/n]?: ".format(title))
-                if ans.lower() == "y":
-                    target_files.append(matching_file) 
+                if not (
+                    title == None or 
+                    title == ''   or 
+                    os.path.isdir(matching_file)
+                ):
+                    ans = raw_input(
+                              "Edit [{}] [Y/n]?: ".format(title)
+                          )
+                    if ans.lower() == "y":
+                        target_files.append(matching_file) 
 
             if len(target_files) > 0:
                 os.system("vim {}".format(" ".join(target_files)))
