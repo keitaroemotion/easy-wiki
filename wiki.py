@@ -54,7 +54,16 @@ else:
                 print("title is blank...")
                 sys.exit()
 
-            matching_files = [x for x in get_files() if re.search(title, "*{}*".format(x))]
+            matching_files = [
+                                 x 
+                                 for x 
+                                 in  get_files() 
+                                 if re.search(
+                                        title,
+                                        "*{}*".format(x)
+                                    )
+                             ]
+
             target_files   = []
             for matching_file in matching_files:
                 if not (
@@ -63,7 +72,7 @@ else:
                     os.path.isdir(matching_file)
                 ):
                     ans = raw_input(
-                              "Edit [{}] [Y/n]?: ".format(title)
+                              "Edit [{}] [Y/n]?: ".format(ntpath.basename(matching_file))
                           )
                     if ans.lower() == "y":
                         target_files.append(matching_file) 
